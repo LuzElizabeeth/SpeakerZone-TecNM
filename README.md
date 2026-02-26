@@ -42,10 +42,10 @@
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/tu-usuario/speakerzone.git
+git clone https://github.com/LuzElizabeeth/SpeakerZone-TecNM.git
 
 # Navegar al directorio
-cd speakerzone
+cd SpeakerZone TecNM
 
 # Instalar dependencias
 npm install
