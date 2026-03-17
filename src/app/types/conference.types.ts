@@ -1,6 +1,20 @@
 /**
- * Tipos TypeScript estrictos para la plataforma SpeakerZone
+ * Rol del usuario en el sistema
  */
+export type UserRole = 'admin' | 'speaker' | 'attendee';
+
+/**
+ * Usuario del sistema
+ */
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  avatarUrl: string;
+  organization?: string;
+  bio?: string;
+}
 
 export type ConferenceType = 'presencial' | 'virtual' | 'híbrida';
 
@@ -61,12 +75,4 @@ export interface Statistics {
 export interface TrendData {
   date: string;
   count: number;
-}
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: 'attendee' | 'speaker' | 'admin';
-  avatarUrl?: string;
 }

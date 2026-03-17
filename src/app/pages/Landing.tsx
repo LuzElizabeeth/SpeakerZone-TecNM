@@ -181,7 +181,7 @@ export const Landing: React.FC = () => {
                     to="/dashboard"
                     className="block w-full text-center py-3 bg-blue-accent text-white rounded-lg hover:bg-blue-hover transition-colors"
                   >
-                    Reservar
+                    Reservar Plaza
                   </Link>
                 </div>
               )}

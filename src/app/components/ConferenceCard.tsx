@@ -187,7 +187,7 @@ export const ConferenceCard: React.FC<ConferenceCardProps> = ({
               : 'bg-gradient-to-r from-blue-gradient-start to-blue-gradient-end text-white hover:shadow-lg hover:scale-[1.02]'
           }`}
         >
-          <span>{isFullyBooked ? 'Sin Disponibilidad' : 'Reservar'}</span>
+          <span>{isFullyBooked ? 'Sin Disponibilidad' : 'Reservar Plaza'}</span>
           {!isFullyBooked && <ArrowRight className="w-4 h-4" />}
         </button>
       </div>

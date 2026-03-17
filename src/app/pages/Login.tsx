@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Eye, EyeOff, Users, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
+import { UserRole } from '../types/conference.types';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ export const Login: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<UserRole>('attendee');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,13 +24,25 @@ export const Login: React.FC = () => {
 
     try {
       if (isLogin) {
-        await login(formData.email, formData.password);
+        await login(formData.email, formData.password, selectedRole);
         toast.success('¡Bienvenido de vuelta!');
+        
+        // Redirigir según el rol
+        switch (selectedRole) {
+          case 'admin':
+            navigate('/admin/dashboard');
+            break;
+          case 'speaker':
+            navigate('/speaker/dashboard');
+            break;
+          default:
+            navigate('/dashboard');
+        }
       } else {
         await register(formData.name, formData.email, formData.password);
         toast.success('¡Cuenta creada exitosamente!');
+        navigate('/dashboard');
       }
-      navigate('/dashboard');
     } catch (error) {
       toast.error('Error al procesar la solicitud. Intenta de nuevo.');
     } finally {
@@ -45,30 +59,86 @@ export const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex">
-      {/* Formulario - Lado Izquierdo */}
+      {/* Left Side - Form */}
       <div className="flex-1 flex items-center justify-center p-8 bg-white">
         <div className="w-full max-w-md">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-gradient-start to-blue-gradient-end rounded-lg flex items-center justify-center">
-              <span className="text-white text-xl">S</span>
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-gradient-start to-blue-gradient-end rounded-lg flex items-center justify-center">
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
             </div>
-            <span className="text-xl text-gray-900">SpeakerZone</span>
+            <span className="text-2xl text-gray-900">SpeakerZone</span>
           </Link>
 
-          {/* Título */}
+          {/* Title */}
           <h1 className="text-3xl mb-2 text-gray-900">
-            {isLogin ? 'Bienvenido de nuevo' : 'Crea tu cuenta'}
+            {isLogin ? 'Bienvenido de vuelta' : 'Crear una cuenta'}
           </h1>
           <p className="text-gray-600 mb-8">
             {isLogin 
               ? 'Ingresa tus credenciales para continuar' 
-              : 'Regístrate para acceder a todas las conferencias'}
+              : 'Regístrate para comenzar a explorar conferencias'}
           </p>
 
-          {/* Formulario */}
+          {/* Role Selection (only for login) */}
+          {isLogin && (
+            <div className="mb-6">
+              <label className="block text-sm text-gray-700 mb-3">
+                Selecciona tu rol
+              </label>
+              <div className="grid grid-cols-3 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setSelectedRole('attendee')}
+                  className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                    selectedRole === 'attendee'
+                      ? 'border-blue-accent bg-blue-light'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <User className={`w-6 h-6 ${selectedRole === 'attendee' ? 'text-blue-accent' : 'text-gray-400'}`} />
+                  <span className={`text-sm ${selectedRole === 'attendee' ? 'text-blue-accent' : 'text-gray-600'}`}>
+                    Asistente
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedRole('speaker')}
+                  className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                    selectedRole === 'speaker'
+                      ? 'border-purple-500 bg-purple-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <Users className={`w-6 h-6 ${selectedRole === 'speaker' ? 'text-purple-600' : 'text-gray-400'}`} />
+                  <span className={`text-sm ${selectedRole === 'speaker' ? 'text-purple-600' : 'text-gray-600'}`}>
+                    Speaker
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedRole('admin')}
+                  className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                    selectedRole === 'admin'
+                      ? 'border-orange-500 bg-orange-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <Shield className={`w-6 h-6 ${selectedRole === 'admin' ? 'text-orange-600' : 'text-gray-400'}`} />
+                  <span className={`text-sm ${selectedRole === 'admin' ? 'text-orange-600' : 'text-gray-600'}`}>
+                    Admin
+                  </span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Campo Nombre (solo en registro) */}
             {!isLogin && (
               <div>
                 <label htmlFor="name" className="block text-sm text-gray-700 mb-2">
@@ -77,20 +147,18 @@ export const Login: React.FC = () => {
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
-                    type="text"
                     id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    placeholder="Juan Pérez"
+                    type="text"
                     required={!isLogin}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-accent focus:border-transparent outline-none transition-all"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-accent focus:border-transparent outline-none transition-all"
+                    placeholder="Juan Pérez"
                   />
                 </div>
               </div>
             )}
 
-            {/* Campo Email */}
             <div>
               <label htmlFor="email" className="block text-sm text-gray-700 mb-2">
                 Correo electrónico
@@ -98,19 +166,22 @@ export const Login: React.FC = () => {
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
-                  type="email"
                   id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="tu@email.com"
+                  type="email"
                   required
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-accent focus:border-transparent outline-none transition-all"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-accent focus:border-transparent outline-none transition-all"
+                  placeholder="tu@email.com"
                 />
               </div>
+              {isLogin && (
+                <p className="text-xs text-gray-500 mt-2">
+                  Usa "admin@..." para Admin, "speaker@..." para Speaker
+                </p>
+              )}
             </div>
 
-            {/* Campo Password */}
             <div>
               <label htmlFor="password" className="block text-sm text-gray-700 mb-2">
                 Contraseña

@@ -269,7 +269,7 @@ export const ConferenceDetail: React.FC = () => {
           {/* Sidebar de Registro */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl p-6 shadow-lg sticky top-24">
-              <h3 className="text-2xl mb-4 text-gray-900">Reservar</h3>
+              <h3 className="text-2xl mb-4 text-gray-900">Reservar Plaza</h3>
 
               {/* Precio */}
               <div className="mb-6">
@@ -310,7 +310,7 @@ export const ConferenceDetail: React.FC = () => {
                     : 'bg-gradient-to-r from-blue-gradient-start to-blue-gradient-end text-white hover:shadow-lg hover:scale-[1.02]'
                 }`}
               >
-                {isFullyBooked ? 'Sin Disponibilidad' : 'Reservar Ahora'}
+                {isFullyBooked ? 'Sin Disponibilidad' : 'Reservar Plaza Ahora'}
               </button>
 
               {/* Beneficios */}
