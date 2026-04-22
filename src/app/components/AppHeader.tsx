@@ -13,7 +13,9 @@ import {
   Settings,
   BarChart3,
   QrCode,
-  FileText
+  FileText,
+  History,
+  MapPin
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -62,10 +64,11 @@ export const AppHeader: React.FC = () => {
       case 'attendee':
       default:
         return [
-          { label: 'Conferencias', path: '/dashboard', icon: Calendar },
-          { label: 'Mis Reservas', path: '/my-conferences', icon: FileText },
-          { label: 'Conferencistas', path: '/speakers', icon: Users },
-          { label: 'Acerca de', path: '/about', icon: Info },
+          { label: 'Inicio', path: '/attendee/dashboard', icon: LayoutDashboard },
+          { label: 'Eventos', path: '/attendee/events', icon: MapPin },
+          { label: 'Mi QR', path: '/attendee/qr', icon: QrCode },
+          { label: 'Certificados', path: '/attendee/certificates', icon: Award },
+          { label: 'Historial', path: '/attendee/history', icon: History },
         ];
     }
   };
@@ -121,7 +124,7 @@ export const AppHeader: React.FC = () => {
                   />
                   <div className="hidden sm:block text-left">
                     <p className="text-sm text-gray-900">{user.name}</p>
-                    <p className="text-xs text-gray-500 capitalize">{user.role}</p>
+                    <p className="text-xs text-gray-500 capitalize">{user.role === 'attendee' ? 'Asistente' : user.role === 'speaker' ? 'Conferencista' : 'Administrador'}</p>
                   </div>
                   <ChevronDown className="w-4 h-4 text-gray-400" />
                 </button>
@@ -140,7 +143,7 @@ export const AppHeader: React.FC = () => {
                       </div>
                       
                       <Link
-                        to={user.role === 'speaker' ? '/speaker/profile' : '/profile'}
+                        to={user.role === 'speaker' ? '/speaker/profile' : user.role === 'admin' ? '/admin/dashboard' : '/attendee/profile'}
                         className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                         onClick={() => setShowUserMenu(false)}
                       >

@@ -16,6 +16,20 @@ import SpeakerProfile from './pages/speaker/SpeakerProfile';
 
 // Admin pages
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminEvents from './pages/admin/AdminEvents';
+import AdminConferences from './pages/admin/AdminConferences';
+import AdminSpeakers from './pages/admin/AdminSpeakers';
+import AdminAttendees from './pages/admin/AdminAttendees';
+import AdminScanner from './pages/admin/AdminScanner';
+import AdminStats from './pages/admin/AdminStats';
+
+// Attendee pages
+import AttendeeProfile from './pages/attendee/AttendeeProfile';
+import AttendeeEvents from './pages/attendee/AttendeeEvents';
+import AttendeeQRCode from './pages/attendee/AttendeeQRCode';
+import AttendeeCertificates from './pages/attendee/AttendeeCertificates';
+import AttendeeHistory from './pages/attendee/AttendeeHistory';
+import AttendeeDashboard from './pages/attendee/AttendeeDashboard';
 
 /**
  * Configuración de rutas usando React Router Data Mode
@@ -73,27 +87,52 @@ export const router = createBrowserRouter([
   },
   {
     path: '/admin/events',
-    Component: AdminDashboard, // Placeholder - crear después
+    Component: AdminEvents,
   },
   {
     path: '/admin/conferences',
-    Component: AdminDashboard, // Placeholder - crear después
+    Component: AdminConferences,
   },
   {
     path: '/admin/speakers',
-    Component: AdminDashboard, // Placeholder - crear después
+    Component: AdminSpeakers,
   },
   {
     path: '/admin/attendees',
-    Component: AdminDashboard, // Placeholder - crear después
+    Component: AdminAttendees,
   },
   {
     path: '/admin/scanner',
-    Component: AdminDashboard, // Placeholder - crear después
+    Component: AdminScanner,
   },
   {
     path: '/admin/stats',
-    Component: AdminDashboard, // Placeholder - crear después
+    Component: AdminStats,
+  },
+  // Attendee routes
+  {
+    path: '/attendee/dashboard',
+    Component: AttendeeDashboard,
+  },
+  {
+    path: '/attendee/profile',
+    Component: AttendeeProfile,
+  },
+  {
+    path: '/attendee/events',
+    Component: AttendeeEvents,
+  },
+  {
+    path: '/attendee/qr',
+    Component: AttendeeQRCode,
+  },
+  {
+    path: '/attendee/certificates',
+    Component: AttendeeCertificates,
+  },
+  {
+    path: '/attendee/history',
+    Component: AttendeeHistory,
   },
   {
     path: '*',

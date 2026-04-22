@@ -36,12 +36,12 @@ export const Login: React.FC = () => {
             navigate('/speaker/dashboard');
             break;
           default:
-            navigate('/dashboard');
+            navigate('/attendee/dashboard');
         }
       } else {
         await register(formData.name, formData.email, formData.password);
         toast.success('¡Cuenta creada exitosamente!');
-        navigate('/dashboard');
+        navigate('/attendee/dashboard');
       }
     } catch (error) {
       toast.error('Error al procesar la solicitud. Intenta de nuevo.');
